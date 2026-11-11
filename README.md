@@ -105,7 +105,6 @@ V2Ray/Xray 的原生远程接口是 gRPC，并非 Clash REST API，因此 ProxyG
 ### 配置、开机启动与升级
 
 - 配置文件：`%APPDATA%\ProxyGuard\config.json`
-- 旧版配置：程序会读取 `%APPDATA%\FlClashGuard\config.json`，首次保存后迁移到新目录。
 - “登录 Windows 后自动运行”只写入当前用户启动项，不需要管理员权限。
 - 更新程序时，先退出托盘中的旧版本，再替换 `ProxyGuard.exe`。
 - 如果程序路径发生变化，需要重新创建受保护快捷方式。
