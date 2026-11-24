@@ -131,6 +131,35 @@ V2Ray/Xray 的原生远程接口是 gRPC，并非 Clash REST API，因此 ProxyG
 
 当前程序没有商业代码签名证书，Windows SmartScreen 可能显示未知发布者。请仅使用可信来源获得的文件，并在运行前核对发布者提供的 SHA-256 校验值。
 
+### 项目结构
+
+```text
+ProxyGuard/
+├── ProxyGuard.csproj          # 主程序项目与发布配置
+├── Program.cs                 # 程序入口与单实例控制
+├── GuardApplicationContext.cs # 托盘菜单、持续监控、关闭与自动重启
+├── HealthChecker.cs           # 客户端、控制接口、节点延迟和代理联网检测
+├── Models.cs                  # 配置、受保护软件和检测结果模型
+├── ConfigStore.cs             # JSON 配置与 Windows 登录启动项
+├── SettingsForm.cs            # 设置窗口和受保护软件编辑窗口
+├── LauncherMode.cs            # 受保护快捷方式的启动检查流程
+├── ShortcutService.cs         # Windows .lnk 快捷方式生成
+├── app.manifest               # Windows 应用清单
+└── README.md                  # 中英文使用说明
+
+ProxyGuard.LayoutTests/
+├── ProxyGuard.LayoutTests.csproj
+└── Program.cs                 # 多窗口尺寸与 DPI/字体缩放布局回归测试
+```
+
+程序使用 .NET WinForms，不依赖第三方 NuGet 运行库。发布配置会生成 Windows x64 自包含单文件程序。
+
+### Vibe Coding 说明
+
+本项目采用 **Vibe Coding** 方式开发：需求和交互主要通过自然语言描述，由 AI 辅助生成、修改、重构和整理代码。项目已执行编译检查及自动化窗口布局回归测试，但这些检查不等同于全面的人工代码审查、安全审计、渗透测试或生产环境验证。
+
+在重要、敏感或生产环境中使用前，建议由具备相关经验的开发人员审查源码、依赖、网络检测逻辑、进程终止行为和发布产物，并根据实际使用场景补充测试。
+
 ### 免责声明
 
 本软件按“现状”提供，不附带任何明示或暗示的保证，包括但不限于适销性、特定用途适用性、持续可用性、检测准确性或无错误保证。
@@ -239,7 +268,6 @@ Disable automatic restart for software containing unsaved documents, financial t
 ### Configuration, startup, and upgrades
 
 - Configuration file: `%APPDATA%\ProxyGuard\config.json`
-- Legacy configuration: `%APPDATA%\FlClashGuard\config.json` is imported and migrated after the next save.
 - **Start after Windows sign-in** creates a startup entry for the current user and does not require administrator privileges.
 - Exit the previous tray instance before replacing `ProxyGuard.exe` during an upgrade.
 - Recreate protected shortcuts whenever the executable path changes.
@@ -265,6 +293,35 @@ Some provider-backed nodes cannot be tested through the per-node delay endpoint.
 #### Windows reports an unknown publisher
 
 The application is not currently signed with a commercial code-signing certificate, so Windows SmartScreen may report an unknown publisher. Only use files obtained from a trusted source and verify the supplied SHA-256 checksum before running them.
+
+### Project structure
+
+```text
+ProxyGuard/
+├── ProxyGuard.csproj          # Main application and publishing configuration
+├── Program.cs                 # Entry point and single-instance control
+├── GuardApplicationContext.cs # Tray menu, monitoring, termination, and restart flow
+├── HealthChecker.cs           # Client, controller, latency, and proxied network checks
+├── Models.cs                  # Configuration, protected-app, and health-result models
+├── ConfigStore.cs             # JSON configuration and Windows sign-in startup entry
+├── SettingsForm.cs            # Settings and protected-application editor windows
+├── LauncherMode.cs            # Pre-launch checks used by protected shortcuts
+├── ShortcutService.cs         # Windows .lnk shortcut creation
+├── app.manifest               # Windows application manifest
+└── README.md                  # Chinese and English documentation
+
+ProxyGuard.LayoutTests/
+├── ProxyGuard.LayoutTests.csproj
+└── Program.cs                 # Window-size and DPI/font-scaling regression checks
+```
+
+The application uses .NET WinForms and has no third-party NuGet runtime dependencies. The publishing configuration produces a self-contained, single-file Windows x64 executable.
+
+### Vibe Coding statement
+
+This project was developed using a **vibe coding** workflow: requirements and interactions were primarily described in natural language, with AI assisting in code generation, modification, refactoring, and documentation. Compilation checks and automated window-layout regression tests have been run, but they do not constitute a comprehensive human code review, security audit, penetration test, or production validation.
+
+Before using the application in an important, sensitive, or production environment, have an experienced developer review the source code, dependencies, network-checking logic, process-termination behavior, and release artifacts, and add tests appropriate to the intended use case.
 
 ### Disclaimer
 
